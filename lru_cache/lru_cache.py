@@ -10,6 +10,7 @@ class LRUCache:
         order, as well as a storage dict that provides fast access
         to every node stored in the cache.
         """
+        self._cache = {}
         self._storage = DoublyLinkedList()
         self._limit = limit
 
@@ -22,11 +23,9 @@ class LRUCache:
         key-value pair doesn't exist in the cache.
         """
 
-        existing_node = self._find_node(key)
-
-        if existing_node:
-            self._storage.move_to_front(existing_node)
-            return existing_node.value[key]
+        if key in self._cache:
+            self._storage.move_to_front(self._cache[key])
+            return self._cache[key].value[1]
         else:
             return None
 
@@ -42,23 +41,14 @@ class LRUCache:
         the newly-specified value.
         """
 
-        existing_node = self._find_node(key)
-        item = {key: value}
-
-        if existing_node:
-            self._storage.delete(existing_node)
+        if key in self._cache:
+            self._storage.delete(self._cache[key])
+            del self._cache[key]
 
         if len(self._storage) >= self._limit:
-            self._storage.remove_from_tail()
+            last = self._storage.tail
+            del self._cache[last.value[0]]
+            self._storage.delete(last)
 
-        self._storage.add_to_head(item)
-
-    def _find_node(self, key: str):
-        working_node = self._storage.head
-        while working_node:
-            if key in working_node.value:
-                return working_node
-
-            working_node = working_node.next
-
-        return None
+        self._storage.add_to_head((key, value))
+        self._cache[key] = self._storage.head
