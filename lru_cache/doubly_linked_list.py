@@ -5,12 +5,12 @@ class ListNode:
     """Each ListNode holds a reference to its previous node
     as well as its next node in the List."""
 
-    def __init__(self, value: int, prev: Optional["ListNode"] = None, next: Optional["ListNode"] = None):
+    def __init__(self, value, prev: Optional["ListNode"] = None, next: Optional["ListNode"] = None):
         self.value = value
         self.prev = prev
         self.next = next
 
-    def insert_after(self, value: int):
+    def insert_after(self, value):
         """Wrap the given value in a ListNode and insert it
         after this node. Note that this node could already
         have a next node it is point to."""
@@ -20,7 +20,7 @@ class ListNode:
         if current_next:
             current_next.prev = self.next
 
-    def insert_before(self, value: int):
+    def insert_before(self, value):
         """Wrap the given value in a ListNode and insert it
         before this node. Note that this node could already
         have a previous node it is point to."""
@@ -52,7 +52,7 @@ class DoublyLinkedList:
     def __len__(self):
         return self.length
 
-    def add_to_head(self, value: int):
+    def add_to_head(self, value):
         """Wraps the given value in a ListNode and inserts it
         as the new head of the list. Don't forget to handle
         the old head node's previous pointer accordingly."""
@@ -74,22 +74,11 @@ class DoublyLinkedList:
         if self.head is None:
             return None
 
-        if self.head is self.tail:
-            old = self.head
-            self.head.delete()
-            self.head = None
-            self.tail = None
-            self.length = 0
-            return old.value
-        else:
-            old = self.head
-            new = self.head.next
-            self.head.delete()
-            self.head = new
-            self.length -= 1
-            return old.value
+        value = self.head.value
+        self.delete(self.head)
+        return value
 
-    def add_to_tail(self, value: int):
+    def add_to_tail(self, value):
         """Wraps the given value in a ListNode and inserts it
         as the new tail of the list. Don't forget to handle
         the old tail node's next pointer accordingly."""
@@ -111,20 +100,9 @@ class DoublyLinkedList:
         if self.tail is None:
             return None
 
-        if self.tail is self.head:
-            old = self.tail
-            self.tail.delete()
-            self.head = None
-            self.tail = None
-            self.length = 0
-            return old.value
-        else:
-            old = self.tail
-            new = self.tail.prev
-            self.tail.delete()
-            self.tail = new
-            self.length -= 1
-            return old.value
+        value = self.tail.value
+        self.delete(self.tail)
+        return value
 
     def move_to_front(self, node: Optional["ListNode"]):
         """Removes the input node from its current spot in the
@@ -155,15 +133,3 @@ class DoublyLinkedList:
 
         node.delete()
         self.length -= 1
-
-    def get_max(self):
-        """Returns the highest value currently in the list"""
-
-        current = self.head
-        highest_value = self.head.value
-
-        while current:
-            highest_value = current.value if current.value > highest_value else highest_value
-            current = current.next
-
-        return highest_value
