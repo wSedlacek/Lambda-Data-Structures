@@ -68,7 +68,7 @@ class BinarySearchTree:
         if node.right:
             node.in_order_print(node.right)
 
-    def bft_print(self, node, root_node=True):
+    def bft_print(self, node: "BinarySearchTree", root_node=True):
         """Print the value of every node, starting with the given node,
         in an iterative breadth first traversal"""
 
@@ -87,7 +87,7 @@ class BinarySearchTree:
         if node.right:
             node.bft_print(node.right, False)
 
-    def dft_print(self, node):
+    def dft_print(self, node: "BinarySearchTree"):
         """Print the value of every node, starting with the given node,
         in an iterative depth first traversal"""
         print(node.value)
@@ -101,10 +101,10 @@ class BinarySearchTree:
     # STRETCH Goals -------------------------
     # Note: Research may be required
 
-    def pre_order_dft(self, node):
+    def pre_order_dft(self, node: "BinarySearchTree"):
         """Print Pre-order recursive DFT"""
         pass
 
-    def post_order_dft(self, node):
+    def post_order_dft(self, node: "BinarySearchTree"):
         """Print Post-order recursive DFT"""
         pass
